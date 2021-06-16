@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">VideoExoplayer</string>
+    <string name="msg_playback_ended">playback ended</string>
+    <string name="msg_playback_started">playback started</string>
+    <string name="msg_playback_paused">playback paused</string>
+</resources>
