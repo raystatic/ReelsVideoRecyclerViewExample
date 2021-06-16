@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.google.android.exoplayer2.Player
 import com.raystatic.videoexoplayer.PlayerViewAdapter.Companion.loadVideo
 import com.raystatic.videoexoplayer.databinding.ItemVideoBinding
@@ -14,49 +16,43 @@ class VideoAdapter(
     private val context: Context,
     private val list: List<MediaObject>,
     private val onItemClick:(View,Int,MediaObject) -> Unit
-):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PlayerStateCallback {
+):RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>(), PlayerStateCallback {
 
     private val TAG = "VIDEODEBUG"
 
-    inner class VideoPlayerViewHolder(private val binding:ItemVideoBinding):RecyclerView.ViewHolder(binding.root){
+    class VideoPlayerViewHolder(private val binding:ItemVideoBinding):RecyclerView.ViewHolder(binding.root){
+
+        val thumnbail = binding.thumbnail
+        val frameLayout = binding.mediaContainer
+        val title = binding.title
+        val volumeControl = binding.volumeControl
+        val progressBar = binding.progressBar
+        val parent = binding.root
+
+
         fun bind(model:MediaObject, position:Int){
             Log.d(TAG, "bind: $model")
             binding.apply {
-                itemVideoExoplayer.loadVideo(
-                    context,
-                    model.mediaUrl.toString(),
-            this@VideoAdapter,
-                    position,true
-                )
-
-                root.setOnClickListener {
-                    onItemClick(it,position, model)
-                }
-
+                parent.tag = this@VideoPlayerViewHolder
+                title.text = model.title
+                Glide.with(itemView)
+                    .load(model.thumbnail)
+                    .into(thumbnail)
             }
         }
     }
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        val position = holder.adapterPosition
-        PlayerViewAdapter.releaseRecycledPlayers(position)
-        super.onViewRecycled(holder)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = ItemVideoBinding.inflate(LayoutInflater.from(context),parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoPlayerViewHolder {
+        val binding = ItemVideoBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return VideoPlayerViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model = list[position]
-        if (holder is VideoPlayerViewHolder){
-            holder.bind(model,position)
-        }
+    override fun onBindViewHolder(holder: VideoPlayerViewHolder, position: Int) {
+        holder.bind(list[position],position)
     }
 
     override fun getItemCount(): Int {
-       return list.size
+        return list.size
     }
 
     override fun onVideoDurationRetrieved(duration: Long, player: Player) {

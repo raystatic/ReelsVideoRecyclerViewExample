@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="100"
     android:id="@+id/parent"
-    android:background="#fff"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="#fff">
 
-    <View
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#000" />
-
-    <com.google.android.exoplayer2.ui.PlayerView
-        app:surface_type="texture_view"
-        android:id="@+id/item_video_exoplayer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:resize_mode="fill"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:padding="10dp"
+        android:textColor="#000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/media_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#000"-->
-<!--        android:scaleType="center">-->
-
-<!--        -->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/thumbnail"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:adjustViewBounds="true"-->
-<!--            android:background="#fff"-->
-<!--            android:scaleType="centerCrop" />-->
-
-<!--        <ImageView-->
-<!--            android:id="@+id/volume_control"-->
-<!--            android:layout_width="25dp"-->
-<!--            android:layout_height="25dp"-->
-<!--            android:layout_gravity="end|bottom"-->
-<!--            android:layout_marginEnd="15dp"-->
-<!--            android:layout_marginStart="15dp"-->
-<!--            android:layout_marginBottom="15dp"-->
-<!--            android:alpha="0"-->
-<!--            android:animateLayoutChanges="true"-->
-<!--            android:scaleType="centerCrop" />-->
-
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progressBar"-->
-<!--            style="?android:attr/progressBarStyle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:visibility="gone" />-->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/media_container"
+        android:text="This is the title"/>
 
 
-<!--    </FrameLayout>-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:background="#000"
+        android:scaleType="center"
+        android:id="@+id/media_container">
 
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:scaleType="centerCrop"
+            android:src="@drawable/white_background" />
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_volume_up"
+            android:layout_gravity="end|bottom"
+            android:id="@+id/volume_control"
+            android:alpha="0"
+            android:animateLayoutChanges="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

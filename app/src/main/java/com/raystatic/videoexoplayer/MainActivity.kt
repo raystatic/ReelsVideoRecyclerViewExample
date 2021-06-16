@@ -9,6 +9,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
 import com.raystatic.videoexoplayer.databinding.ActivityMainBinding
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,8 +26,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        player
 
         modelList.addAll(
                 mutableListOf(
@@ -69,20 +68,20 @@ class MainActivity : AppCompatActivity() {
 
         val snapHelper = LinearSnapHelper()
 
-        val scrollListener = object : RecyclerViewScrollListener(){
-            override fun onItemIsFirstVisibleItem(index: Int) {
-                if (index != -1){
-                    PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
-                }
-            }
-        }
+//        val scrollListener = object : RecyclerViewScrollListener(){
+//            override fun onItemIsFirstVisibleItem(index: Int) {
+//                if (index != -1){
+//                    PlayerViewAdapter.playIndexThenPausePreviousPlayer(index)
+//                }
+//            }
+//        }
 
-        binding.recyclerView.apply {
+        binding.rvVideos.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
+            this.setMediaObjects(modelList as ArrayList<MediaObject>?)
             adapter = videoAdapter
             snapHelper.attachToRecyclerView(this)
-            addOnScrollListener(scrollListener)
         }
 
        // binding.itemVideoExoplayer.player = player
@@ -91,6 +90,11 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.rvVideos.releasePlayer()
     }
 
     private var playWhenReady = true
