@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvVideos.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
-            this.setMediaObjects(modelList as ArrayList<MediaObject>?)
+            this.setMediaObjects(modelList)
             adapter = videoAdapter
             snapHelper.attachToRecyclerView(this)
         }

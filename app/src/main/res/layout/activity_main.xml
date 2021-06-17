@@ -23,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone"/>
 
-    <com.raystatic.videoexoplayer.VideoPlayerRecyclerView
+    <com.raystatic.videoexoplayer.CustomVideoRecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rvVideos"

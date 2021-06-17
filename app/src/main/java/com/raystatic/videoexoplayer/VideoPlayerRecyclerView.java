@@ -137,9 +137,6 @@ public class VideoPlayerRecyclerView extends RecyclerView {
             }
         });
 
-        videoPlayer.addListener(new Player.Listener(){
-
-        });
 
         videoPlayer.addListener(new Player.Listener() {
 
