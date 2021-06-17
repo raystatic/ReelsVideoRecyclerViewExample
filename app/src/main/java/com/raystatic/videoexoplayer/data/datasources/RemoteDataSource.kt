@@ -12,7 +12,7 @@ class RemoteDataSource @Inject constructor(
 ) {
 
     suspend fun fetchVideos(count:Int):Response<List<VideoResponseItem>>{
-        return apiService.getTrendingVideos(region = "US",language = "en-US",count = count,apiKey = "qmECOzi2BaMmNuhWbFG3lBRoGjxtVSt1")
+        return apiService.getTrendingVideos(region = "IN",language = "en-US",count = count,apiKey = "O5pjwyWJWthaBYmWtu52a3OGgjfmNUkT")
     }
 
 

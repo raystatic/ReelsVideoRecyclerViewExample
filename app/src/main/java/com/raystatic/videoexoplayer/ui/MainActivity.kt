@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -54,10 +55,11 @@ class MainActivity : AppCompatActivity() {
                     it.data?.let {
                         videoAdapter.submitData(it)
                         binding.rvVideos.setMediaObjects(it as MutableList<VideoResponseItem>)
+                        binding.progressBar.isVisible = false
                     }
                 }
                 Resource.Status.LOADING -> {
-
+                    binding.progressBar.isVisible = true
                 }
                 Resource.Status.ERROR -> {
                     Toast.makeText(this, "err", Toast.LENGTH_SHORT).show()
