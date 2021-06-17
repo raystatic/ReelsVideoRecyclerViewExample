@@ -1,4 +1,4 @@
-package com.raystatic.videoexoplayer
+package com.raystatic.videoexoplayer.ui
 
 import android.content.Context
 import android.graphics.Point
@@ -22,7 +22,9 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.raystatic.videoexoplayer.databinding.ItemVideoBinding
+import com.raystatic.videoexoplayer.MediaObject
+import com.raystatic.videoexoplayer.R
+import com.raystatic.videoexoplayer.data.model.VideoResponseItem
 
 class CustomVideoRecyclerView: RecyclerView{
 
@@ -43,7 +45,7 @@ class CustomVideoRecyclerView: RecyclerView{
     private var videoPlayer:SimpleExoPlayer?=null
 
     //variables
-    private var mediaObjects = mutableListOf<MediaObject>()
+    private var mediaObjects = mutableListOf<VideoResponseItem>()
     private var videoSurfaceDefaultHeight = 0
     private var screenDefaultHeight = 0
     private lateinit var ctx:Context
@@ -51,7 +53,7 @@ class CustomVideoRecyclerView: RecyclerView{
     private var isVideoViewAdded = false
 
     // playback state
-    private lateinit var volumeState:VolumeState
+    private lateinit var volumeState: VolumeState
 
     constructor(context: Context):super(context){
         init(context)
@@ -76,11 +78,12 @@ class CustomVideoRecyclerView: RecyclerView{
         videoPlayer = SimpleExoPlayer.Builder(context).build()
 
         // bind player to view
-        videoSurfaceView.useController = false
+        videoSurfaceView.useController = true
         videoSurfaceView.player = videoPlayer
         setVolumeControl(VolumeState.ON)
 
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
@@ -124,18 +127,21 @@ class CustomVideoRecyclerView: RecyclerView{
             override fun onPlaybackStateChanged(state: Int) {
                 when (state) {
                     Player.STATE_BUFFERING -> {
+                        Log.d(TAG, "onPlaybackStateChanged: buffering")
                         progressBar?.isVisible = true
                     }
 
                     Player.STATE_ENDED -> {
+                        Log.d(TAG, "onPlaybackStateChanged: ended")
                         videoPlayer?.seekTo(0)
                     }
 
                     Player.STATE_IDLE -> {
-
+                        Log.d(TAG, "onPlaybackStateChanged: idle")
                     }
 
                     Player.STATE_READY -> {
+                        Log.d(TAG, "onPlaybackStateChanged: ready")
                         progressBar?.isVisible = false
                         if (!isVideoViewAdded) {
                             addVideoView()
@@ -271,7 +277,7 @@ class CustomVideoRecyclerView: RecyclerView{
                 Util.getUserAgent(context, "VideoRecyclerView")
         )
 
-        val mediaUrl = mediaObjects[targetPosition].mediaUrl
+        val mediaUrl = mediaObjects[targetPosition].video.playAddr
         if (mediaUrl != null){
             val videoSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(mediaUrl))
             videoPlayer?.setMediaSource(videoSource)
@@ -353,7 +359,7 @@ class CustomVideoRecyclerView: RecyclerView{
         }
     }
 
-    fun setMediaObjects(mediaObjects: MutableList<MediaObject>){
+    fun setMediaObjects(mediaObjects: MutableList<VideoResponseItem>){
         this.mediaObjects = mediaObjects
     }
 

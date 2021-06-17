@@ -1,0 +1,30 @@
+package com.raystatic.videoexoplayer.data.model
+
+data class VideoResponseItem(
+    val author: Author,
+    val authorStats: AuthorStats,
+    val challenges: List<Challenge>,
+    val createTime: Int,
+    val desc: String,
+    val digged: Boolean,
+    val duetEnabled: Boolean,
+    val duetInfo: DuetInfo,
+    val forFriend: Boolean,
+    val id: String,
+    val isAd: Boolean,
+    val itemCommentStatus: Int,
+    val itemMute: Boolean,
+    val music: Music,
+    val officalItem: Boolean,
+    val originalItem: Boolean,
+    val privateItem: Boolean,
+    val secret: Boolean,
+    val shareEnabled: Boolean,
+    val showNotPass: Boolean,
+    val stats: Stats,
+    val stickersOnItem: List<StickersOnItem>,
+    val stitchEnabled: Boolean,
+    val textExtra: List<TextExtra>,
+    val video: Video,
+    val vl1: Boolean
+)

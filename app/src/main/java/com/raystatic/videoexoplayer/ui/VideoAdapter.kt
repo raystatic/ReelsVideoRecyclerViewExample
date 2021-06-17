@@ -1,4 +1,4 @@
-package com.raystatic.videoexoplayer
+package com.raystatic.videoexoplayer.ui
 
 import android.content.Context
 import android.util.Log
@@ -7,18 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.google.android.exoplayer2.Player
-import com.raystatic.videoexoplayer.PlayerViewAdapter.Companion.loadVideo
+import com.raystatic.videoexoplayer.MediaObject
+import com.raystatic.videoexoplayer.PlayerStateCallback
+import com.raystatic.videoexoplayer.TAG
+import com.raystatic.videoexoplayer.data.model.VideoResponseItem
 import com.raystatic.videoexoplayer.databinding.ItemVideoBinding
 
 class VideoAdapter(
-    private val context: Context,
-    private val list: List<MediaObject>,
-    private val onItemClick:(View,Int,MediaObject) -> Unit
+        private val context: Context,
+        private val onItemClick:(View, Int, MediaObject) -> Unit
 ):RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>(), PlayerStateCallback {
 
     private val TAG = "VIDEODEBUG"
+
+    private var list = listOf<VideoResponseItem>()
+
+    fun submitData(l:List<VideoResponseItem>){
+        list = l
+        notifyDataSetChanged()
+    }
 
     class VideoPlayerViewHolder(private val binding:ItemVideoBinding):RecyclerView.ViewHolder(binding.root){
 
@@ -30,13 +38,12 @@ class VideoAdapter(
         val parent = binding.root
 
 
-        fun bind(model:MediaObject, position:Int){
+        fun bind(model: VideoResponseItem, position:Int){
             Log.d(TAG, "bind: $model")
             binding.apply {
                 parent.tag = this@VideoPlayerViewHolder
-                title.text = model.title
                 Glide.with(itemView)
-                    .load(model.thumbnail)
+                    .load(model.video.originCover)
                     .into(thumbnail)
             }
         }
