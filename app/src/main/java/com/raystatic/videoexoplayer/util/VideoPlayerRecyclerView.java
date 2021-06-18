@@ -1,4 +1,4 @@
-package com.raystatic.videoexoplayer;
+package com.raystatic.videoexoplayer.util;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -32,6 +32,7 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.raystatic.videoexoplayer.R;
 import com.raystatic.videoexoplayer.ui.VideoAdapter;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.raystatic.videoexoplayer
+package com.raystatic.videoexoplayer.util
 
 data class MediaObject(
     val title:String?=null,

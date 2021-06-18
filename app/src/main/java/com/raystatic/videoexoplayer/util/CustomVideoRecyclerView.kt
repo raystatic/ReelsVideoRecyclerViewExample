@@ -1,4 +1,4 @@
-package com.raystatic.videoexoplayer.ui
+package com.raystatic.videoexoplayer.util
 
 import android.content.Context
 import android.graphics.Point
@@ -22,9 +22,9 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.raystatic.videoexoplayer.MediaObject
 import com.raystatic.videoexoplayer.R
 import com.raystatic.videoexoplayer.data.model.VideoResponseItem
+import com.raystatic.videoexoplayer.ui.VideoAdapter
 
 class CustomVideoRecyclerView: RecyclerView{
 

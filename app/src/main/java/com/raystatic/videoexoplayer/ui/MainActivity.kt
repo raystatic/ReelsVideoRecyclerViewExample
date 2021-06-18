@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
-import com.raystatic.videoexoplayer.MediaObject
-import com.raystatic.videoexoplayer.PlayerViewAdapter
+import com.raystatic.videoexoplayer.util.MediaObject
 import com.raystatic.videoexoplayer.data.model.VideoResponseItem
 import com.raystatic.videoexoplayer.databinding.ActivityMainBinding
 import com.raystatic.videoexoplayer.util.Resource
@@ -24,9 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var videoAdapter: VideoAdapter
-    private val modelList = mutableListOf<MediaObject>()
-
-    private var player:SimpleExoPlayer ?= null
 
     private val vm by viewModels<VideoViewModel>()
 
@@ -36,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        videoAdapter = VideoAdapter(this){view, i, mediaObject ->
-
-        }
+        videoAdapter = VideoAdapter()
 
         val snapHelper = LinearSnapHelper()
 
@@ -49,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             snapHelper.attachToRecyclerView(this)
         }
 
-        vm.videos.observe(this, Observer {
+        vm.videos.observe(this, {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     it.data?.let {
@@ -76,56 +70,18 @@ class MainActivity : AppCompatActivity() {
         binding.rvVideos.releasePlayer()
     }
 
-    private var playWhenReady = true
-    private var currentWindow = 0
-    private var playbackPosition: Long = 0
-
     override fun onPause() {
         super.onPause()
         if (Util.SDK_INT < 24) {
-            PlayerViewAdapter.releaseAllPlayers()
+            binding.rvVideos.releasePlayer()
         }
     }
 
     override fun onStop() {
         super.onStop()
         if (Util.SDK_INT >= 24) {
-            PlayerViewAdapter.releaseAllPlayers()
+            binding.rvVideos.releasePlayer()
         }
     }
-//
-//    private fun releasePlayer() {
-//        if (player!=null) {
-//            playWhenReady = player!!.playWhenReady
-//            playbackPosition = player!!.currentPosition
-//            currentWindow = player!!.currentWindowIndex
-//            player!!.release()
-//            player = null
-//        }
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        if (Util.SDK_INT >= 24) {
-//            initializePlayer()
-//        }
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        if (Util.SDK_INT < 24 || player == null) {
-//            initializePlayer()
-//        }
-//    }
-//
-//    private fun initializePlayer() {
-//        player = SimpleExoPlayer.Builder(this).build()
-//        binding.itemVideoExoplayer.setPlayer(player)
-//        val mediaItem = MediaItem.fromUri("https://static.klliq.com/videos/uWPJnU7z5OysYjptZkBI6T1HANjC4WdP_hd.mp4")
-//        player!!.setMediaItem(mediaItem)
-//        player!!.setPlayWhenReady(playWhenReady);
-//        player!!.seekTo(currentWindow, playbackPosition);
-//        player!!.prepare();
-//    }
 
 }
