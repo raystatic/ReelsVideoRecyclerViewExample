@@ -23,7 +23,9 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.raystatic.videoexoplayer.R
+import com.raystatic.videoexoplayer.data.model.Video
 import com.raystatic.videoexoplayer.data.model.VideoResponseItem
+import com.raystatic.videoexoplayer.data.responses.pixabay.Hit
 import com.raystatic.videoexoplayer.ui.VideoAdapter
 
 class CustomVideoRecyclerView: RecyclerView{
@@ -45,7 +47,7 @@ class CustomVideoRecyclerView: RecyclerView{
     private var videoPlayer:SimpleExoPlayer?=null
 
     //variables
-    private var mediaObjects = mutableListOf<VideoResponseItem>()
+    private var mediaObjects = mutableListOf<Hit>()
     private var videoSurfaceDefaultHeight = 0
     private var screenDefaultHeight = 0
     private lateinit var ctx:Context
@@ -277,7 +279,8 @@ class CustomVideoRecyclerView: RecyclerView{
                 Util.getUserAgent(context, "VideoRecyclerView")
         )
 
-        val mediaUrl = mediaObjects[targetPosition].video.playAddr
+        val mediaUrl = mediaObjects[targetPosition].videos.medium.url
+        Log.d(TAG, "playVideo: playaddr: $mediaUrl")
         if (mediaUrl != null){
             val videoSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(MediaItem.fromUri(mediaUrl))
             videoPlayer?.setMediaSource(videoSource)
@@ -359,7 +362,7 @@ class CustomVideoRecyclerView: RecyclerView{
         }
     }
 
-    fun setMediaObjects(mediaObjects: MutableList<VideoResponseItem>){
+    fun setMediaObjects(mediaObjects: MutableList<Hit>){
         this.mediaObjects = mediaObjects
     }
 

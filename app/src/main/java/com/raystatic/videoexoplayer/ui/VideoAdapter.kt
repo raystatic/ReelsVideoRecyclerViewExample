@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.raystatic.videoexoplayer.data.model.Video
 import com.raystatic.videoexoplayer.data.model.VideoResponseItem
+import com.raystatic.videoexoplayer.data.responses.pixabay.Hit
 import com.raystatic.videoexoplayer.databinding.ItemVideoBinding
 
 class VideoAdapter:RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>() {
 
     private val TAG = "VIDEODEBUG"
 
-    private var list = listOf<VideoResponseItem>()
+    private var list = listOf<Hit>()
 
-    fun submitData(l:List<VideoResponseItem>){
+    fun submitData(l:List<Hit>){
         list = l
         notifyDataSetChanged()
     }
@@ -30,12 +32,12 @@ class VideoAdapter:RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>() {
         val progressBar = binding.progressBar
         val parent = binding.root
 
-
-        fun bind(model: VideoResponseItem, position:Int){
+        fun bind(model: Hit, position:Int){
+            println("VIDEODEBUG: model: $model")
             binding.apply {
                 parent.tag = this@VideoPlayerViewHolder
                 Glide.with(itemView)
-                    .load(model.video.originCover)
+                    .load(model.userImageURL)
                     .into(thumbnail)
             }
         }

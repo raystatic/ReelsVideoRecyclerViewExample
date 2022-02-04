@@ -33,7 +33,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit =  Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .baseUrl("https://api.promptapi.com/tiktok/")
+        .baseUrl("https://pixabay.com/api/")
         .client(okHttpClient)
         .build()
 

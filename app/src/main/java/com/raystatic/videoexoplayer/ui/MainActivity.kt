@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.util.Util
+import com.raystatic.videoexoplayer.data.model.Video
 import com.raystatic.videoexoplayer.util.MediaObject
 import com.raystatic.videoexoplayer.data.model.VideoResponseItem
+import com.raystatic.videoexoplayer.data.responses.pixabay.Hit
 import com.raystatic.videoexoplayer.databinding.ActivityMainBinding
+import com.raystatic.videoexoplayer.util.DataState
 import com.raystatic.videoexoplayer.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,26 +46,25 @@ class MainActivity : AppCompatActivity() {
             snapHelper.attachToRecyclerView(this)
         }
 
-        vm.videos.observe(this, {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    it.data?.let {
+        vm.videos.observe(this) {
+            when (it) {
+                is DataState.Success -> {
+                    it.data.let {
                         videoAdapter.submitData(it)
-                        binding.rvVideos.setMediaObjects(it as MutableList<VideoResponseItem>)
+                        binding.rvVideos.setMediaObjects(it as MutableList<Hit>)
                         binding.progressBar.isVisible = false
                     }
                 }
-                Resource.Status.LOADING -> {
+                is DataState.Loading -> {
                     binding.progressBar.isVisible = true
                 }
-                Resource.Status.ERROR -> {
-                    Toast.makeText(this, "err", Toast.LENGTH_SHORT).show()
+                is DataState.Error -> {
+                    Toast.makeText(this, "${it.exception.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-        })
+        }
 
-        vm.getVideos()
-
+        vm.setStateEvent(VideoStateEvent.GetVideos)
     }
 
     override fun onDestroy() {
