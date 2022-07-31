@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.raystatic.videoexoplayer.data.model.Video
@@ -16,12 +18,24 @@ class VideoAdapter:RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>() {
 
     private val TAG = "VIDEODEBUG"
 
-    private var list = listOf<Hit>()
+    private val diffCallback = object : DiffUtil.ItemCallback<Hit>(){
+        override fun areItemsTheSame(oldItem: Hit, newItem: Hit): Boolean =
+            oldItem.id == newItem.id
 
-    fun submitData(l:List<Hit>){
-        list = l
-        notifyDataSetChanged()
+        override fun areContentsTheSame(
+            oldItem: Hit,
+            newItem: Hit
+        ) = oldItem == newItem
     }
+
+    private val differ = AsyncListDiffer(this,diffCallback)
+
+    fun submitData(list: List<Hit>) = differ.submitList(list)
+
+//    fun submitData(l:List<Hit>){
+//        list = l
+//        notifyDataSetChanged()
+//    }
 
     class VideoPlayerViewHolder(private val binding:ItemVideoBinding):RecyclerView.ViewHolder(binding.root){
 
@@ -49,10 +63,10 @@ class VideoAdapter:RecyclerView.Adapter<VideoAdapter.VideoPlayerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: VideoPlayerViewHolder, position: Int) {
-        holder.bind(list[position],position)
+        holder.bind(differ.currentList[position],position)
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return differ.currentList.size
     }
 }
